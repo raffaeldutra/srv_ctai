@@ -1,0 +1,2 @@
+AddDescription "Shell Script" .sh .csh .ksh
+AddType text/plain .sh
