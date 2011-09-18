@@ -46,57 +46,58 @@ EOT
 . $(pwd)/setClamav.sh
 
 case "$1" in
-'-ci'  ) checkIps $2                ;;
+'-ci'  )  checkIps $2                ;;
 # apache, bind, php
-'-abp')  setMacNic
-         checkNetwork
-         setBashrc
-         setResolvconfDefaultGw
-         setEnvironment $1
-         setAliasForNic
-         validateEnvironment bind9
-         setBind
-         validateEnvironment apache2
-         setApache
-         setModulesApache
-         setEnvironmentApache
-         setSslForApache
-         validateEnvironment php5
-         setEnvironmentApachePhp
-         setResolvconfIV
-         restartServices $1 # enviando a opcao selecionada
-         showInformations           ;;
+'-abp')   setMacNic
+          checkNetwork
+          setBashrc
+          setResolvconfDefaultGw
+          setEnvironment $1
+          setAliasForNic
+          validateEnvironment bind9
+          setBind $1
+          validateEnvironment apache2
+          setApache
+          setModulesApache
+          setEnvironmentApache
+          setSslForApache
+          validateEnvironment php5
+          setEnvironmentApachePhp
+          setResolvconfIV
+          restartServices $1 # enviando a opcao selecionada
+          showInformations           ;;
 # apache, bind, email com integracao
-'-abei') checkNetwork
-         setResolvconfDefaultGw
-         setBashrc
-         setVimrc
-         setEnvironment $1
-         validateEnvironment bind9
-         setBind $1
-         validateEnvironment apache2
-         setApache squirrelmail /usr/share
-         setEnvironmentApache
-         validateEnvironment postfix
-         setPostfix
-         setAmavis
-         setSpamAssassin
-         setSquirrelmail
-         setClamav
-         testClamav
-         setResolvconf
-         restartServices $1 # enviando a opcao selecionada
-         showInformations           ;;
-'-rs'  ) restartServices $2         ;;
-'-fz'  ) filterZones                ;;
-'-tz'  ) testZones                  ;;
-'-tzr' ) testZonesReverse           ;;
-'-srs' ) setResolvconfDefaultGw     ;;
-'-si'  ) showInformations           ;;
-'-srv' ) setResolvconf              ;;
-'-smn' ) setMacNic                  ;;
-'-sam' ) setAliasForNic             ;;
-'-s'   ) search $2 $3               ;;
+'-abei' ) checkNetwork
+          setResolvconfDefaultGw
+          setBashrc
+          setVimrc
+          setEnvironment $1
+          validateEnvironment bind9
+          setBind $1
+          validateEnvironment apache2
+          setApache squirrelmail /usr/share
+          setEnvironmentApache
+          validateEnvironment postfix
+          setPostfix
+          setAmavis
+          setSpamAssassin
+          setSquirrelmail
+          setClamav
+          testClamav
+          setResolvconf
+          restartServices $1 # enviando a opcao selecionada
+          showInformations           ;;
+'-rs'   ) restartServices $2         ;;
+'-bind' ) setBind                    ;;
+'-fz'   ) filterZones                ;;
+'-tz'   ) testZones                  ;;
+'-tzr'  ) testZonesReverse           ;;
+'-srs'  ) setResolvconfDefaultGw     ;;
+'-si'   ) showInformations           ;;
+'-srv'  ) setResolvconf              ;;
+'-smn'  ) setMacNic                  ;;
+'-sam'  ) setAliasForNic             ;;
+'-s'    ) search $2 $3               ;;
 *)
   echo "Usage: $0 [-h(help)|-f(filtering)|-c(changelog)|-d(download)|-s(search -v<optional> <software> )]"
 esac

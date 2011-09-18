@@ -7,10 +7,7 @@
 function filterZones()
 {
 
-cat $bindPrefix/named.conf.local | \
-fgrep -w zone | \
-sed 's/"//g;s/zone//;s/ //' | \
-egrep '(.com|.com.br|.org|.net|.info|.tv|.br)'
+cat $bindPrefix/named.conf.local | fgrep -w zone | sed 's/"//g;s/zone//;s/ //' | egrep '(.com|.com.br|.org|.net|.info|.tv|.br)'
 
 }
 
@@ -19,7 +16,8 @@ egrep '(.com|.com.br|.org|.net|.info|.tv|.br)'
 function setBind()
 {
 
-if [ "$1" == "-abei" ]
+# passado via parametro para saber qual tipo de servicos configurar
+if [ "$1" == "-abei" -o "x$1" == "x" ]
 then
     nicForDns=$(checkIps eth0)
 else
@@ -77,7 +75,7 @@ do
         sleep 3
 # se comecar com ponto inicial
     elif [[ "$nameDomain" =~ ^[.] ]]
-	then
+    then
         echo "Nao deve comecar com ponto conforme mostrado acima"; echo
         sleep 1
 	else
@@ -136,7 +134,7 @@ cat << EOT >> $bindPrefix/zones/$doCreateZone.$nameDomain
 EOT
 
 # aqui sao setado os subdominios do dominio, caso seja necessario mais, apenas acrescentar abaixo
-    for netServices in @ ns www ftp mail ntp nfs
+    for netServices in @ ns www ftp mail ntp nfs ldap samba
     do
 cat << EOT >> $bindPrefix/zones/$doCreateZone.$nameDomain
 $netServices	IN  A     $nicForDns

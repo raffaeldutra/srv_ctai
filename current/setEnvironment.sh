@@ -157,8 +157,13 @@ function setEnvironment()
 if [ "$(cat /etc/debian_version | cut -d . -f1 )" -eq 6 ]
 then
     debianName=squeeze
-else 
+elif [ "$(cat /etc/debian_version | cut -d . -f1 )" -eq 5 ]
     debianName=lenny
+elif [ "$(cat /etc/debian_version | cut -d . -f1 )" -eq 4 ]
+    debianName=etch
+else
+    echo "Versao de sistemas desconhecida, saindo"
+    exit 1
 fi
 
 echo; echo "Configurando $aptPrefix/sources.list"
@@ -186,86 +191,26 @@ apt-get update
 
 clear
 echo "Instalando pacotes, seja bonzinho e espere :-P"
-sleep 7
+sleep 5
+
 
 if [ "$1" == "-abei" ]
 then
+
 # instala os pacotes necessarios sem precisar de h?umanos para dar o yes :-P
-for package in openssh-server \
-bind9 \
-apache2 \
-lynx \
-nslookup \
-postifx \
-courier-base \
-courier-imap \
-qpopper \
-amavisd-new \
-arj \
-cabextract \
-cpio \
-lzop \
-ripole \
-spamassassin \
-spamc \
-razor \
-dcc-client \
-gpm \
-squirrelmail \
-pyzor \
-postfix \
-clamav \
-clamav-docs \
-clamav-daemon \
-clamav-freshclam \
-clamav-testfiles \
-arc \
-arj \
-bzip2 \
-cabextract \
-nomarch \
-p7zip \
-pax \
-tnef \
-unzip \
-zoo \
-lha \
-unrar \
-vim
-do
-	clear; echo "Instalando $package"
-	sleep 2
-	DEBIAN_FRONTEND=noninteractive apt-get --force-yes -y install $package
-done
+package=(openssh-server bind9 apache2 lynx nslookup postifx courier-base courier-imap qpopper amavisd-new arj cabextract cpio lzop
+ripole spamassassin spamc razor dcc-client gpm squirrelmail pyzor postfix clamav clamav-docs clamav-daemon
+clamav-freshclam clamav-testfiles arc arj bzip2 cabextract nomarch p7zip pax tnef unzip zoo lha unrar vim)
 
 else
-for package in openssh-server \
-bind9 \
-apache2 \
-php5 \
-ntp \
-ntpdate \
-lynx \
-dig \
-nslookup \
-openssl \
-vsftpd \
-nfs-kernel-server \
-nfs-common \
-postifx \
-courier-base \
-courier-imap \
-courier-pop \
-qpopper \
-gpm \
-postfix \
-vim \
-icedove
 do
-	clear; echo "Instalando $package"
-	sleep 2
-	DEBIAN_FRONTEND=noninteractive apt-get --force-yes -y install $package
+package=(openssh-server bind9 apache2 php5 ntp ntpdate lynx dig nslookup openssl vsftpd nfs-kernel-server nfs-common
+postifx courier-base courier-imap courier-pop qpopper gpm postfix vim icedove)
 done
+
+clear; echo "Instalando ${package[@]}"
+sleep 2
+DEBIAN_FRONTEND=noninteractive apt-get --force-yes -y install ${package[@]}
 
 fi
 }
